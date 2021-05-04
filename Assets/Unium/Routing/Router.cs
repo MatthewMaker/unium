@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using gw.proto.http;
 
 namespace gw.unium
@@ -14,11 +13,11 @@ namespace gw.unium
         public delegate void RouteHandler( RequestAdapter req, string path );
         public delegate object CacheHandler( RequestAdapter req, string path, int level );
 
-        public string           Path                    = null;
+        public string           Path;
         public bool             DispatchOnGameThread    = true;
         public bool             ExactMatch              = false;
         public CacheHandler     CacheContext            = null;     // called to create cached context (in case of repeating)
-        public RouteHandler     Handler                 = null;     // called to process request
+        public RouteHandler     Handler;     // called to process request
 
         public string RelativePath( RequestAdapter request )
         {
@@ -27,7 +26,7 @@ namespace gw.unium
 
         public void SetCacheContext( RequestAdapter request, int level )
         {
-            request.CachedContext = CacheContext == null ? null : CacheContext( request, RelativePath( request ), level );
+            request.CachedContext = CacheContext?.Invoke( request, RelativePath( request ), level );
         }
 
         public void Dispatch( RequestAdapter request )
@@ -54,7 +53,7 @@ namespace gw.unium
 
         //----------------------------------------------------------------------------------------------------
 
-        bool        mSorted = false;
+        bool        mSorted;
         List<Route> mRoutes = new List<Route>();
 
         public Route Find( string url )
@@ -68,7 +67,7 @@ namespace gw.unium
             foreach( var route in mRoutes )
             {
                 // path filter
-                
+
                 var path = route.Path;
 
                 if( url.Length < path.Length )
@@ -111,7 +110,7 @@ namespace gw.unium
 
         public Route Add( string path, Route.RouteHandler handler )
         {
-            var route = new Route() { Path = path, Handler = handler };
+            var route = new Route { Path = path, Handler = handler };
 
             mRoutes.Add( route );
             mSorted = false;
@@ -125,7 +124,7 @@ namespace gw.unium
             route.DispatchOnGameThread  = false;
             return route;
         }
-            
+
         public void Remove( string path )
         {
             mRoutes.RemoveAll( route => route.Path == path );

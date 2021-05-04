@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public string   ID             = null;
+    public string   ID;
     public float    RotateSpeed    = 0.5f;
     public float    BobSpeed       = 0.01f;
     public float    BobHeight      = 0.2f;
 
-    float mStartY   = 0.0f;
-    float mT        = 0.0f;
+    float mStartY;
+    float mT;
 
     void Start()
     {

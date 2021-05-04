@@ -2,7 +2,6 @@
 
 using System;
 using gw.proto.http;
-
 #if UNITY_2017_3_OR_NEWER
 using UnityEngine.Networking;
 #endif
@@ -106,7 +105,7 @@ namespace gw.unium
         public override void SetContentType( string mimetype )  {}
 
         string       mPath      = "";
-        string       mResult    = null;
+        string       mResult;
         ResponseCode mCode      = ResponseCode.OK;
 
         public bool     IsError                                 { get { return mCode != ResponseCode.OK || mResult == null; } }

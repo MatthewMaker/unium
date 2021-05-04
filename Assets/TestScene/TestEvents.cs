@@ -1,9 +1,10 @@
 ﻿#pragma warning disable 0067
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-[System.Serializable]
+[Serializable]
 public class MyIntEvent : UnityEvent<int, int>
 {
 }
@@ -66,17 +67,17 @@ public class TestEvents : MonoBehaviour
 
     void OnEventParams1( int a )
     {
-        Debug.Log( "OnEventParams1 " + a.ToString() );
+        Debug.Log( "OnEventParams1 " + a );
     }
 
     void OnEventParams1v2( int a )
     {
-        Debug.Log( "OnEventParams1v2 " + a.ToString() );
+        Debug.Log( "OnEventParams1v2 " + a );
     }
 
     void OnEventParams2( int a, string b )
     {
-        Debug.Log( "OnEventParams2 " + a.ToString() + ", " + b );
+        Debug.Log( "OnEventParams2 " + a + ", " + b );
     }
 
     string OnEventReturn()
@@ -103,6 +104,6 @@ public class TestEvents : MonoBehaviour
 
     void OnUnityIntEvent( int a, int b )
     {
-        Debug.Log( "UnityIntEvent " + a.ToString() + ", " + b.ToString() );
+        Debug.Log( "UnityIntEvent " + a + ", " + b );
     }
 }

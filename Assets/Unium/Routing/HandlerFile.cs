@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
-using UnityEngine;
-using System.Threading;
 
+using System.Threading;
+using UnityEngine;
 #if UNITY_2017_3_OR_NEWER
 using UnityEngine.Networking;
 #endif

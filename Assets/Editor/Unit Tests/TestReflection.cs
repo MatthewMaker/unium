@@ -1,11 +1,10 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using UnityEngine;
-using NUnit.Framework;
 using System.Collections.Generic;
-
 using gw.proto.utils;
+using NUnit.Framework;
+using UnityEngine;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,14 +45,15 @@ public class TestReflection
         Assert.AreEqual( @"{""a"":6,""b"":""hello""}", JsonReflector.Reflect( new { a = 6, b = "hello" } ) );
 
         // array
-        Assert.AreEqual( @"[1,2,3,4]", JsonReflector.Reflect( new int[] { 1, 2, 3, 4 } ) );
+        Assert.AreEqual( @"[1,2,3,4]", JsonReflector.Reflect( new[] { 1, 2, 3, 4 } ) );
 
         // list
-        Assert.AreEqual( @"[1,2,3,4]", JsonReflector.Reflect( new List<int>() { 1, 2, 3, 4 } ) );
+        Assert.AreEqual( @"[1,2,3,4]", JsonReflector.Reflect( new List<int> { 1, 2, 3, 4 } ) );
 
         // dictionary
 
-        var dict = new Dictionary<string,int>() {
+        var dict = new Dictionary<string,int>
+        {
             { "k1", 1 },
             { "k2", 2 },
             { "k3", 3 },
@@ -61,7 +61,8 @@ public class TestReflection
 
         Assert.AreEqual( @"{""k1"":1,""k2"":2,""k3"":3}", JsonReflector.Reflect( dict ) );
 
-        var nonStringKeys = new Dictionary<object,int>() {
+        var nonStringKeys = new Dictionary<object,int>
+        {
             { new { x = 1 }, 1 },
             { new { z = 1 }, 2 },
             { new { fish = 1, z = 2 }, 3 },

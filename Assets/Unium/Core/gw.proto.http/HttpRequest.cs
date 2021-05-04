@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
 using gw.proto.utils;
 
 namespace gw.proto.http
@@ -37,7 +36,7 @@ namespace gw.proto.http
         private Stream      mStream;
 
 
-        static uint sNextID = 0;
+        static uint sNextID;
 
         public HttpRequest()
         {
@@ -152,7 +151,7 @@ namespace gw.proto.http
                 Util.Warn( "[{0}] {1} {2}", ID, e.Code, HttpUtils.CodeToString( e.Code ) );
                 Response.Reject( e.Code );
             }
-            catch( System.IO.IOException e )
+            catch( IOException e )
             {
                 Util.Warn( "[{0}] failed to read from stream - {1}", ID, e.Message );
                 mStream.Close();
@@ -221,9 +220,9 @@ namespace gw.proto.http
         //------------------------------------------------------------------------------
         // get next line from input stream (buffered)
 
-        byte[]  mBuffer         = null;
-        int     mBufferPos      = 0;
-        int     mBufferedBytes  = 0;
+        byte[]  mBuffer;
+        int     mBufferPos;
+        int     mBufferedBytes;
 
         string ReadLine()
         {
@@ -287,7 +286,7 @@ namespace gw.proto.http
 
             // parse request line
 
-            var request = line.Split( new char[]{ ' ' }, 4, StringSplitOptions.RemoveEmptyEntries );
+            var request = line.Split( new[]{ ' ' }, 4, StringSplitOptions.RemoveEmptyEntries );
 
             if( request.Length != 3 )
             {
@@ -307,7 +306,7 @@ namespace gw.proto.http
 
         void ReadHeaders()
         {
-            var split = new char[] { ':' };
+            var split = new[] { ':' };
 
             var line = ReadLine();
 

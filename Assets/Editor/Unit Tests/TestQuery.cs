@@ -1,12 +1,11 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using gw.gql;
+using NUnit.Framework;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,8 +32,8 @@ public class TestQuery
 
         // recursive find ...
 
-        public string   name = null;
-        public Interpreter.Child[] children = null;
+        public string   name;
+        public Interpreter.Child[] children;
 
         public TestObject( string _name, TestObject[] _children = null )
         {
@@ -83,7 +82,8 @@ public class TestQuery
     [Test]
     public void ShouldGetValues()
     {
-        var root = new Dictionary<string,object>() {
+        var root = new Dictionary<string,object>
+        {
             { "a", new { name = "childA", v = new { a = 3 } } },
             { "b", new { name = "childB", v = new { a = 4 } } },
             { "c (Clone)", new { name = "childC", v = new { a = 5 } } },
@@ -145,7 +145,8 @@ public class TestQuery
     [Test]
     public void ShouldSetValues()
     {
-        var root = new Dictionary<string,TestObject>() {
+        var root = new Dictionary<string,TestObject>
+        {
             { "a", new TestObject() },
             { "b (Clone)", new TestObject() },
         };
@@ -201,7 +202,8 @@ public class TestQuery
     [Test]
     public void ShouldInvokeFunctions()
     {
-        var root = new Dictionary<string,TestObject>() {
+        var root = new Dictionary<string,TestObject>
+        {
             { "a", new TestObject() },
             { "b (Clone)", new TestObject() },
         };
@@ -249,20 +251,20 @@ public class TestQuery
     [Test]
     public void ShouldBeAbleToRecursivelyFindNodes()
     {
-        var root = new Dictionary<string,object>()
+        var root = new Dictionary<string,object>
         {
             {
-                "a", new TestObject( "a", new TestObject[] {
-                        new TestObject( "aa", new TestObject[] {
+                "a", new TestObject( "a", new[] {
+                        new TestObject( "aa", new[] {
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
-                            new TestObject( "ccc", new TestObject[] { new TestObject( "dddd" ) } ),
+                            new TestObject( "ccc", new[] { new TestObject( "dddd" ) } ),
                             new TestObject( "dddd" ),
                         }),
-                        new TestObject( "bb", new TestObject[] {
+                        new TestObject( "bb", new[] {
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
-                            new TestObject( "ccc", new TestObject[] { new TestObject( "dddd", new TestObject[] { new TestObject( "dddd" ) } ) } ),
+                            new TestObject( "ccc", new[] { new TestObject( "dddd", new[] { new TestObject( "dddd" ) } ) } ),
                             new TestObject( "ccc (Clone)"),
                             new TestObject( "wierd=name"),
                         }),
@@ -271,17 +273,17 @@ public class TestQuery
                 )
             },
             {
-                "b (Clone)", new TestObject( "b", new TestObject[] {
-                        new TestObject( "aa", new TestObject[] {
+                "b (Clone)", new TestObject( "b", new[] {
+                        new TestObject( "aa", new[] {
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
-                            new TestObject( "ccc", new TestObject[] { new TestObject( "dddd" ) } ),
+                            new TestObject( "ccc", new[] { new TestObject( "dddd" ) } ),
                             new TestObject( "ccc (Clone)" ),
                         }),
-                        new TestObject( "bb", new TestObject[] {
+                        new TestObject( "bb", new[] {
                             new TestObject( "aaa" ),
                             new TestObject( "bbb" ),
-                            new TestObject( "ccc", new TestObject[] { new TestObject( "dddd" ) } ),
+                            new TestObject( "ccc", new[] { new TestObject( "dddd" ) } ),
                             new TestObject( "ccc (Clone)" ),
                         }),
                         new TestObject( "cc" ),
@@ -405,14 +407,14 @@ public class TestQuery
     [Test]
     public void ShouldWorkWithCommonTypes()
     {
-        var root = new Dictionary<string, object>()
+        var root = new Dictionary<string, object>
         {
-            { "l_int",  new { list = new List<int>() { 1,2,3 } } },
-            { "l_obj",  new { list = new List<object>() { new { a = 1 }, new { b = 2 }, new { c = 3 } } } },
-            { "a_int",  new { arr  = new int[] { 1, 2, 3 } } },
+            { "l_int",  new { list = new List<int> { 1,2,3 } } },
+            { "l_obj",  new { list = new List<object> { new { a = 1 }, new { b = 2 }, new { c = 3 } } } },
+            { "a_int",  new { arr  = new[] { 1, 2, 3 } } },
             { "a_obj",  new { arr  = new object[] { new { a = 1 }, new { b = 2 }, new { c = 3 } } } },
-            { "l_enum", new { list = new List<TestEnum>() { TestEnum.Red, TestEnum.Green, TestEnum.Blue } } },
-            { "dict",   new { dict = new Dictionary<string,int>() { { "a", 1 }, { "b", 2 }, { "c", 3 } } } }
+            { "l_enum", new { list = new List<TestEnum> { TestEnum.Red, TestEnum.Green, TestEnum.Blue } } },
+            { "dict",   new { dict = new Dictionary<string,int> { { "a", 1 }, { "b", 2 }, { "c", 3 } } } }
         };
 
         List<object> r;

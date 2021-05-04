@@ -1,11 +1,9 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
-using System.Collections.Generic;
-using System.Collections;
-
 
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace gw.gql

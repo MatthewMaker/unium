@@ -92,7 +92,7 @@ namespace gw.gql
 
                     if( UniumComponent.IsDebug )
                     {
-                        UniumComponent.Warn( string.Format( "Failed to set value for field '{0}' - {1}", fieldName, e.Message ) );
+                        UniumComponent.Warn($"Failed to set value for field '{fieldName}' - {e.Message}");
                     }
                 }
             }

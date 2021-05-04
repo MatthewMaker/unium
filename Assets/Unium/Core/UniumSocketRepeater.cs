@@ -21,11 +21,11 @@ namespace gw.unium
             Route mRoute;
             RequestAdapterSocket mRequest;
 
-            int     mCount  = 0;
-            float   mTimer  = 0.0f;
+            int     mCount;
+            float   mTimer;
 
-            int     mFrom   = 0;
-            int     mTo     = 0;
+            int     mFrom;
+            int     mTo;
             float   mFreq   = 1.0f;
 
 

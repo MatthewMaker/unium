@@ -46,19 +46,22 @@ namespace gw.gql.calc
             {
                 return new OperandExpression( token );
             }
-            else if( token.IsBinaryOperator() )
+
+            if( token.IsBinaryOperator() )
             {
                 var rhs = CreateExpression( mInput.Pop() );
                 var lhs = CreateExpression( mInput.Pop() );
 
                 return new BinaryExpression( token, lhs, rhs );
             }
-            else if( token.IsUnaryOperator() )
+
+            if( token.IsUnaryOperator() )
             {
                 var operand = CreateExpression( mInput.Pop() );
                 return new UnaryExpression( token, operand );
             }
-            else if( token.Type == Token.Function )
+
+            if( token.Type == Token.Function )
             {
                 var args = new LogicalExpression[ token.Args ];
 
@@ -69,10 +72,8 @@ namespace gw.gql.calc
 
                 return new FunctionExpression( token, args );
             }
-            else
-            {
-                throw new FormatException( "Unexpected token type " + token.Type.ToString() );
-            }
+
+            throw new FormatException( "Unexpected token type " + token.Type );
         }        
     }
 }

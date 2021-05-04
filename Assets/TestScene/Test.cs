@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System;
-
-using gw.unium;
-using gw.gql;
+﻿using System;
 using gw.proto.utils;
+using gw.unium;
+using UnityEngine;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +18,7 @@ public class Test : MonoBehaviour
     {
         // check we can add routes dynamically
         // TODO: gw - temporarily remove test route - RoutesHTTP is protected
-        Unium.RoutesHTTP.AddImmediate( "/test", ( RequestAdapter req, string path ) => req.Respond( @"{""test"":""ok""}" ) );
+        Unium.RoutesHTTP.AddImmediate( "/test", (req, path) => req.Respond( @"{""test"":""ok""}" ) );
 
         if( IPText != null )
         {
@@ -36,15 +35,15 @@ public class Test : MonoBehaviour
 
         // 20% chance of warning or error
 
-        if( UnityEngine.Random.value > 0.8f )
+        if( Random.value > 0.8f )
         {
-            type = UnityEngine.Random.value < 0.6f ? LogType.Warning : LogType.Error;
+            type = Random.value < 0.6f ? LogType.Warning : LogType.Error;
         }
 
 #if UNITY_5
         Debug.logger.Log( type, string.Format( "Level time is {0}", Time.timeSinceLevelLoad ) );
 #else
-        Debug.unityLogger.Log( type, string.Format( "Level time is {0}", Time.timeSinceLevelLoad ) );
+        Debug.unityLogger.Log( type, $"Level time is {Time.timeSinceLevelLoad}");
 #endif
     }
 
@@ -52,11 +51,11 @@ public class Test : MonoBehaviour
     //----------------------------------------------------------------------------------------------------
     // custom event
 
-    public int FrameCounter = 0;
+    public int FrameCounter;
 
     public event Action<object> TickEvent;
 
-    float mTimer = 0.0f;
+    float mTimer;
 
     void Update()
     {
@@ -71,9 +70,6 @@ public class Test : MonoBehaviour
 
         mTimer = 0.0f;
 
-        if( TickEvent != null )
-        {
-            TickEvent( new { levelTime = Time.timeSinceLevelLoad } );
-        }
+        TickEvent?.Invoke( new { levelTime = Time.timeSinceLevelLoad } );
     }
 }

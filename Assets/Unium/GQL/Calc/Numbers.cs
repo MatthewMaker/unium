@@ -12,7 +12,7 @@ namespace gw.gql.calc
     {
         //----------------------------------------------------------------------------------------------------
 
-        private static Type[] CommonTypes = new[] { typeof(Int64), typeof(Double), typeof(Boolean), typeof(String), typeof(Decimal) };
+        private static Type[] CommonTypes = { typeof(Int64), typeof(Double), typeof(Boolean), typeof(String), typeof(Decimal) };
 
         private static Type GetMostPreciseType( Type a, Type b )
         {

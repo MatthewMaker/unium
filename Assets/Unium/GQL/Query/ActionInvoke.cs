@@ -126,7 +126,7 @@ namespace gw.gql
                 {
                     if( UniumComponent.IsDebug )
                     {
-                        UniumComponent.Warn( string.Format( "Failed to invoke '{0}' - {1}", actionName, e.Message ) );
+                        UniumComponent.Warn($"Failed to invoke '{actionName}' - {e.Message}");
                     }
                 }
             }

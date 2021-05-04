@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-
-// navmesh moved to UnityEngine.AI in 2017
+﻿// navmesh moved to UnityEngine.AI in 2017
+using UnityEngine;
 #if !UNITY_5
 using UnityEngine.AI;
 #endif

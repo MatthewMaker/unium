@@ -2,7 +2,6 @@
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System.Collections.Generic;
-
 using gw.gql;
 using gw.proto.http;
 
@@ -33,7 +32,7 @@ namespace gw.unium
         public static void Execute( RequestAdapter adapter, string path )
         {
             var socket  = ( adapter as RequestAdapterSocket ).Socket;
-            var root    = new Dictionary<string,object>() { { "socket", new UniumSocket.SocketCommands( socket ) } };
+            var root    = new Dictionary<string,object> { { "socket", new UniumSocket.SocketCommands( socket ) } };
 
             var q = new Query( adapter.Path, root ).Select();
             var r = q.Execute();

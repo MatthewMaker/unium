@@ -1,9 +1,8 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using UnityEngine;
-
 using gw.gql;
+using UnityEngine;
 
 namespace gw.unium
 {
@@ -42,7 +41,8 @@ namespace gw.unium
                 {
                     return UniumUtils.Path( go );
                 }
-                else if( name == "iid" )
+
+                if( name == "iid" )
                 {
                     return go.GetInstanceID();
                 }

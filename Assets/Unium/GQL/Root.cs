@@ -23,7 +23,7 @@ namespace gw.gql
                 foreach( var el in mRoot )
                 {
                     var fn = el.Value as Func<object>;
-                    children[ i++ ] = new Interpreter.Child( el.Key.ToString(), fn != null ? fn() : el.Value );
+                    children[ i++ ] = new Interpreter.Child( el.Key, fn != null ? fn() : el.Value );
                 }
 
                 return children;

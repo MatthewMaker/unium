@@ -54,7 +54,7 @@ namespace gw.unium
             }
 
             sceneLoaded( new {
-                name = scene.name
+                scene.name
             });
         }
 

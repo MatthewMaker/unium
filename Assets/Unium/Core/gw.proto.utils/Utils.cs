@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-
+using Debug = UnityEngine.Debug;
 #if UNITY_2017_3_OR_NEWER
 using UnityEngine.Networking;
 #endif
@@ -29,19 +29,19 @@ namespace gw.proto.utils
         [Conditional("GW_LOGGING")]
         public static void Print( string msg, params object[] args )
         {
-            UnityEngine.Debug.Log( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
+            Debug.Log($"[{DateTime.Now:HH:mm:ss.ffff}] {string.Format(msg, args)}");
         }
 
         [Conditional( "GW_LOGGING" )]
         public static void Warn( string msg, params object[] args )
         {
-            UnityEngine.Debug.LogWarning( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
+            Debug.LogWarning($"[{DateTime.Now:HH:mm:ss.ffff}] {string.Format(msg, args)}");
         }
 
         [Conditional( "GW_LOGGING" )]
         public static void Error( string msg, params object[] args )
         {
-            UnityEngine.Debug.LogError( string.Format( "[{0:HH:mm:ss.ffff}] {1}", DateTime.Now, string.Format( msg, args ) ) );
+            Debug.LogError($"[{DateTime.Now:HH:mm:ss.ffff}] {string.Format(msg, args)}");
         }
 
         public static string DetectPublicIPAddress()
@@ -51,12 +51,12 @@ namespace gw.proto.utils
                 return IPAddress.Any.ToString(); // 0.0.0.0
             }
 
-            return Dns.GetHostEntry( Dns.GetHostName() )
-                .AddressList
-                .Where( addr => addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback( addr ) )
-                .LastOrDefault() // seems to be the convention :o
-                .ToString()
-            ;
+            var hostname = Dns.GetHostName();
+            var foo = Dns.GetHostEntry( hostname );
+            var addrs = foo.AddressList;
+            var theaddr = addrs.LastOrDefault(addr => addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback( addr ));
+            if (theaddr != null) return theaddr.ToString();
+            return "";
         }
 
         public static NameValueCollection ParseQueryString( string query )
@@ -68,8 +68,8 @@ namespace gw.proto.utils
                 return bag;
             }
 
-            var parameterDelimiters = new char[] { '?', '&' };
-            var keyValueDelimiters  = new char[] { '=' };
+            var parameterDelimiters = new[] { '?', '&' };
+            var keyValueDelimiters  = new[] { '=' };
 
             var parameters = query.Split( parameterDelimiters, StringSplitOptions.RemoveEmptyEntries );
 

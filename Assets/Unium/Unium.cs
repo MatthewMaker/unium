@@ -1,13 +1,11 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 
-using UnityEngine;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.SceneManagement;
-
 using gw.gql;
 using gw.proto.utils;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace gw.unium
 {
@@ -65,7 +63,7 @@ namespace gw.unium
             RoutesHTTP.Add( "/utils/scene",         HandlerUtils.HandlerScene );
             RoutesHTTP.Add( "/utils",               HandlerUtils.NotFound );
 
-            RoutesHTTP.Add( "/", ( RequestAdapter req, string path ) => req.Redirect( "index.html" ) ).ExactMatch = true;
+            RoutesHTTP.Add( "/", (req, path) => req.Redirect( "index.html" ) ).ExactMatch = true;
 
             // android requires the WWW interface, so dispatch file requests on the game thread
             // otherwise we can dispatch immediately on a worker thread
@@ -81,7 +79,7 @@ namespace gw.unium
 
             // default route handler if all others fail
 
-            RoutesHTTP.Otherwise = new Route()
+            RoutesHTTP.Otherwise = new Route
             {
                 Handler              = HandlerFile.Serve,
                 DispatchOnGameThread = Application.platform == RuntimePlatform.Android

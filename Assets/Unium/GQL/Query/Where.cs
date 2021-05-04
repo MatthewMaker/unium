@@ -1,10 +1,10 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
-using System.Collections;
 
 
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using gw.gql.calc;
@@ -18,7 +18,7 @@ namespace gw.gql
 
         static object GetAttrFromChain( object o, string name )
         {
-            foreach( var field in name.Split( new char[] { '.' } ) )
+            foreach( var field in name.Split('.') )
             {
                 o = o != null ? Interpreters.Get( o.GetType() ).Attr( o, field ) : null;
             }
@@ -29,7 +29,7 @@ namespace gw.gql
 
         delegate object WhereFunction( LogicalExpression[] arguments, WhereContext context );
 
-        static Dictionary<string,WhereFunction> sFunctions = new Dictionary<string, WhereFunction>()
+        static Dictionary<string,WhereFunction> sFunctions = new Dictionary<string, WhereFunction>
         {
             { "abs",    ( args, context ) => Math.Abs( Convert.ToDouble( args[0].Evaluate( context ) ) ) },
 
@@ -59,7 +59,7 @@ namespace gw.gql
                     return name == "$" ? subject : GetAttrFromChain( subject, name );
                 };
 
-                InvokeFunction = ( string name, LogicalExpression[] arguments, EvaluationContext context ) =>
+                InvokeFunction = (name, arguments, context) =>
                 {
                     return sFunctions.ContainsKey( name ) ? sFunctions[ name ].Invoke( arguments, context as WhereContext ) : null;
                 };
@@ -70,7 +70,7 @@ namespace gw.gql
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // where
 
-        Expression   mExpr    = null;
+        Expression   mExpr;
         WhereContext mContext = new WhereContext();
 
         public Where( string str )

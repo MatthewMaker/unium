@@ -1,7 +1,4 @@
-﻿using gw.gql;
-using gw.proto.utils;
-using gw.unium;
-using UnityEngine;
+﻿using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
