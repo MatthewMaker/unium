@@ -52,10 +52,10 @@ namespace gw.proto.utils
             }
 
             return Dns.GetHostEntry( Dns.GetHostName() )
-                .AddressList
-                .Where( addr => addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback( addr ) )
-                .LastOrDefault() // seems to be the convention :o
-                .ToString()
+                    .AddressList
+                    .Where( addr => addr.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback( addr ) )
+                    .LastOrDefault() // seems to be the convention :o
+                    .ToString() ?? string.Empty
             ;
         }
 
