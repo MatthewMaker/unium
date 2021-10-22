@@ -94,7 +94,7 @@ namespace gw.gql.calc
 
         //----------------------------------------------------------------------------------------------------
 
-        public int      Type        = Token.None;
+        public int      Type        = None;
         public string   Text        = "";
         public int      Args        = 0;
 

@@ -21,7 +21,7 @@ namespace gw.proto.http
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    [Serializable()]
+    [Serializable]
     public class WebSocketException : Exception
     {
         public WebSocketStatus Code;

@@ -2,7 +2,6 @@
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
-
 using gw.proto.utils;
 
 namespace gw.proto.http
@@ -47,8 +46,8 @@ namespace gw.proto.http
 
         Reading mState          = Reading.Header;
         byte[]  mMask           = new byte[ 4 ];
-        uint    mPayloadLen     = 0;
-        uint    mWritePosition  = 0;
+        uint    mPayloadLen;
+        uint    mWritePosition;
 
         public WebSocketFrame()
         {
@@ -75,7 +74,8 @@ namespace gw.proto.http
             {
                 return ReadHeader( buffer, offset, available );
             }
-            else if( mState == Reading.Payload )
+
+            if( mState == Reading.Payload )
             {
                 return ReadPayload( buffer, offset, available );
             }
@@ -171,7 +171,7 @@ namespace gw.proto.http
 
             if( payload < 126 )
             {
-                mPayloadLen = (uint) payload;
+                mPayloadLen = payload;
             }
             else if( payload == 126 )
             {
@@ -182,7 +182,7 @@ namespace gw.proto.http
                     throw new WebSocketException( WebSocketStatus.PayloadTooLarge );
                 }
 
-                mPayloadLen = (uint) size;
+                mPayloadLen = size;
             }
             else // payload == 127
             {

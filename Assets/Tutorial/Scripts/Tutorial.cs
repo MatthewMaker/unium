@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class Tutorial : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class Tutorial : MonoBehaviour
 
     static bool OpenOnce    = true;
 
-    int         mNumPickups = 0;
+    int         mNumPickups;
 
     // exposed event for tutorial script to hook into
     public event Action<object> OnPickupCollected;
@@ -27,7 +29,7 @@ public class Tutorial : MonoBehaviour
             if( OpenBrowser && OpenOnce )
             {
                 OpenOnce = false;
-                System.Diagnostics.Process.Start( "http://localhost:8342/tutorial/index.html" );
+                Process.Start( "http://localhost:8342/tutorial/index.html" );
             }
         }
         else

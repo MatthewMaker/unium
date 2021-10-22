@@ -53,7 +53,7 @@ namespace gw.proto.utils
 
         public JsonTypeConverters()
         {
-            mConverters = new Dictionary<Type, JsonSerialiser>()
+            mConverters = new Dictionary<Type, JsonSerialiser>
             {
                 { typeof( bool ), new SerialiseBool() },
                 { typeof( int ),  new SerialiseInt() },
@@ -99,7 +99,8 @@ namespace gw.proto.utils
             {
                 return o.ToString().ToLower();
             }
-            else if( type.IsPrimitive )
+
+            if( type.IsPrimitive )
             {
                 return Convert.ToString( o, CultureInfo.InvariantCulture );
             }

@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class TestTicker : MonoBehaviour
 {
-    public int TickerID = 0;
+    public int TickerID;
     public event Action<object> TickEvent;
 
-    float mTimer = 0.0f;
+    float mTimer;
 
     void Update()
     {

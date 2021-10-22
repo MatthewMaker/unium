@@ -6,7 +6,7 @@
 public class TestBehaviour : MonoBehaviour
 {
     public int      SomeID      = 1;
-    public float    RandomValue = 0.0f;
+    public float    RandomValue;
 
     void Start()
     {
@@ -15,7 +15,7 @@ public class TestBehaviour : MonoBehaviour
 
     public int CallThisFunction()
     {
-        Debug.Log( string.Format( "CallThisFunction() called on {0}:{1}", gameObject.name, SomeID ) );
+        Debug.Log($"CallThisFunction() called on {gameObject.name}:{SomeID}");
         return SomeID;
     }
 

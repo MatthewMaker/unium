@@ -133,7 +133,8 @@ namespace gw.gql
 
                 return results.ToArray();
             }
-            else if( type.IsArray )
+
+            if( type.IsArray )
             {
                 // foreach element, pass query
 

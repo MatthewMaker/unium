@@ -1,16 +1,14 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 
-using UnityEngine;
-
-using System;
-using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-
+using System.Net;
 using gw.proto.http;
 using gw.proto.utils;
 using gw.unium;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,14 +16,14 @@ using gw.unium;
 
 public class UniumComponent : MonoBehaviour
 {
-    public static UniumComponent Singleton = null;
-    public static bool IsDebug { get { return Singleton != null && Singleton.EnableDebug; } }
+    public static UniumComponent Singleton;
+    public static bool IsDebug => Singleton != null && Singleton.EnableDebug;
 
     public int      Port            = 8342;
     public bool     RunInBackground = true;
-    public bool     EnableDebug     = false;
+    public bool     EnableDebug;
     public bool     AutoStart       = true;
-    public string   StaticFiles     = null;
+    public string   StaticFiles;
 
     public enum AddressStrategy
     {
@@ -45,9 +43,9 @@ public class UniumComponent : MonoBehaviour
         public Route                Route;
     }
 
-    List< GameThreadRequest >   mQueuedRequests = new List<GameThreadRequest>();
-    List< UniumSocket >         mSockets        = new List<UniumSocket>();
-    Server                      mServer         = null;
+    readonly List< GameThreadRequest >   mQueuedRequests = new List<GameThreadRequest>();
+    readonly List< UniumSocket >         mSockets        = new List<UniumSocket>();
+    Server                      mServer;
 
 
     //----------------------------------------------------------------------------------------------------
@@ -58,7 +56,7 @@ public class UniumComponent : MonoBehaviour
 
         if( Singleton != null && Singleton != this )
         {
-            Destroy( this.gameObject );
+            Destroy( gameObject );
             return;
         }
 
@@ -74,7 +72,7 @@ public class UniumComponent : MonoBehaviour
             Application.runInBackground = true;
         }
 
-        var root = Path.Combine( Application.streamingAssetsPath, StaticFiles != null ? StaticFiles : "" );
+        var root = Path.Combine( Application.streamingAssetsPath, StaticFiles ?? "" );
 
         HandlerFile.Mount( "persistent", Application.persistentDataPath );
         HandlerFile.Mount( "streaming",  Application.streamingAssetsPath );
@@ -133,7 +131,7 @@ public class UniumComponent : MonoBehaviour
 
         mServer.Start();
 
-        Log( string.Format( "server listening on {0}:{1}", mServer.Settings.Address.ToString(), Port ) );
+        Log($"server listening on {mServer.Settings.Address}:{Port}");
     }
 
 
@@ -203,7 +201,7 @@ public class UniumComponent : MonoBehaviour
 
         var route = Unium.RoutesHTTP.Find( req.URL );
 
-        if( route == null || route.Handler == null )
+        if( route?.Handler == null )
         {
             req.Reject( ResponseCode.NotFound );
             return;
@@ -213,7 +211,7 @@ public class UniumComponent : MonoBehaviour
         {
             lock( mQueuedRequests )
             {
-                mQueuedRequests.Add( new GameThreadRequest() { Request = new RequestAdapterHTTP( req ), Route = route } );
+                mQueuedRequests.Add( new GameThreadRequest { Request = new RequestAdapterHTTP( req ), Route = route } );
             }
         }
         else
@@ -252,14 +250,14 @@ public class UniumComponent : MonoBehaviour
     {
         if( ws.URL != "/ws" )
         {
-            Log( string.Format( "[sock:{0}] rejected - {1}", ws.ID, ws.URL ) );
-            ws.Reject( ResponseCode.NotFound );
+            Log($"[sock:{ws.ID}] rejected - {ws.URL}");
+            ws.Reject();
             return;
         }
 
         lock( mSockets )
         {
-            Log( string.Format( "[sock:{0}] connected - {1}", ws.ID, ws.URL ) );
+            Log($"[sock:{ws.ID}] connected - {ws.URL}");
             mSockets.Add( new UniumSocket( ws ) );
             ws.Accept();
         }
@@ -272,10 +270,10 @@ public class UniumComponent : MonoBehaviour
     {
         lock( mSockets )
         {
-            Log( string.Format( "[sock:{0}] closed", ws.ID ) );
+            Log($"[sock:{ws.ID}] closed");
 
             var socket = ws.User as UniumSocket;
-            socket.OnClose();
+            socket?.OnClose();
             mSockets.Remove( socket );
         }
     }
@@ -298,7 +296,7 @@ public class UniumComponent : MonoBehaviour
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static int sLogNumber = 0;
+    static int sLogNumber;
 
     [Conditional( "DEBUG" )]
     public static void Log( string msg, LogType type = LogType.Log )
@@ -308,14 +306,15 @@ public class UniumComponent : MonoBehaviour
             return;
         }
 
-        var str = string.Format( "[unium][{0}] {1}", sLogNumber++, msg );
+        var str = $"[unium][{sLogNumber++}] {msg}";
 
         switch( type )
         {
-            case LogType.Log:       UnityEngine.Debug.Log( str ); break;
-            case LogType.Warning:   UnityEngine.Debug.LogWarning( str ); break;
+            case LogType.Log:       Debug.Log( str ); break;
+            case LogType.Warning:   Debug.LogWarning( str ); break;
             default:
-            case LogType.Error:     UnityEngine.Debug.LogError( str ); break;
+            // ReSharper disable once RedundantCaseLabel
+            case LogType.Error:     Debug.LogError( str ); break;
         }
     }
 

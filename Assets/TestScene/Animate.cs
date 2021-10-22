@@ -5,7 +5,7 @@ public class Animate : MonoBehaviour
     public float Height = 5.0f;
     public float Speed  = 1.0f;
 
-    float mT = 0.0f;
+    float mT;
 
     void Update()
     {

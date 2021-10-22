@@ -2,8 +2,8 @@
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace gw.proto.http
@@ -12,8 +12,8 @@ namespace gw.proto.http
 
     public class HttpResponse
     {
-        Stream          mStream         = null;
-        bool            mHeadersWritten = false;
+        Stream          mStream;
+        bool            mHeadersWritten;
 
         public bool     IsClosed        { get; private set; }
         public Encoding Encoding        = Encoding.UTF8;

@@ -1,8 +1,8 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using System.Net.Sockets;
 using System.IO;
+using System.Net.Sockets;
 
 namespace gw.proto.http
 {
@@ -16,10 +16,9 @@ namespace gw.proto.http
         public string       Address         { get { return mClient != null ? mClient.Client.RemoteEndPoint.ToString() : "unknown"; } }
         public int          SendBufferSize  { get { return mClient != null ? mClient.SendBufferSize : 128 * 1024; } }
 
-        private TcpClient mClient =  null;
+        private TcpClient mClient;
 
         public Client( Dispatcher dispatcher, TcpClient client )
-            : base()
         {
             mClient     = client;
             Dispatch    = dispatcher;
@@ -28,8 +27,7 @@ namespace gw.proto.http
 
 
         public Client( Dispatcher dispatcher, Stream stream )
-            : base()
-		{
+        {
             Dispatch    = dispatcher;
             Stream      = stream;
 		}

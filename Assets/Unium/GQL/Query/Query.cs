@@ -36,9 +36,9 @@ namespace gw.gql
         {
             switch( SearchPath.Action )
             {
-                case Query.Action.Get:      return Selected;
-                case Query.Action.Set:      return ActionSet();
-                case Query.Action.Invoke:   return ActionInvoke();
+                case Action.Get:      return Selected;
+                case Action.Set:      return ActionSet();
+                case Action.Invoke:   return ActionInvoke();
             }
 
             return null;

@@ -10,8 +10,8 @@ namespace gw.gql
     public class Path
     {
         public Query.Action Action      = Query.Action.Get;
-        public string       Target      = null;
-        public string[]     Arguments   = null;
+        public string       Target;
+        public string[]     Arguments;
 
 
         public Path( string query )
@@ -28,17 +28,17 @@ namespace gw.gql
 
         // query path
 
-        Segment[] mPath = null;
+        Segment[] mPath;
 
         public class Segment
         {
-            public enum Type { Children, Attribute };
+            public enum Type { Children, Attribute }
 
-            public string   Select          = null;             // text of path section
+            public string   Select;             // text of path section
             public Type     NodeType        = Type.Children;
-            public Where    Where           = null;             // filter function
-            public Regex    Match           = null;             // regex name match
-            public bool     RecursiveFind   = false;
+            public Where    Where;             // filter function
+            public Regex    Match;             // regex name match
+            public bool     RecursiveFind;
         }
 
 
@@ -139,7 +139,7 @@ namespace gw.gql
                     if( action[ 0 ] == '=' )
                     {
                         Action       = Query.Action.Set;
-                        Arguments    = new string[] { p };
+                        Arguments    = new[] { p };
                     }
 
 
@@ -223,7 +223,7 @@ namespace gw.gql
 
                 // add section to path
 
-                var section = new Segment()
+                var section = new Segment
                 {
                     Select          = name,
                     NodeType        = type,

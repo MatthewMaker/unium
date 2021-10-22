@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using UnityEngine;
 using System;
 using TinyJson;
+using UnityEngine;
 
 namespace gw.gql
 {
@@ -15,11 +15,13 @@ namespace gw.gql
             {
                 return Enum.Parse( type, value );
             }
-            else if( type == typeof( Vector3 ) )
+
+            if( type == typeof( Vector3 ) )
             {
                 return value.FromJson<Vector3>();
             }
-            else if( value.Length > 0 && value[0] == '{' )
+
+            if( value.Length > 0 && value[0] == '{' )
             {
                 return JsonUtility.FromJson( value, type );
             }

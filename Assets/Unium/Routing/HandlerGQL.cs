@@ -1,8 +1,8 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using gw.proto.utils;
 using gw.gql;
+using gw.proto.utils;
 
 namespace gw.unium
 {
@@ -21,7 +21,7 @@ namespace gw.unium
 
         public static object CacheContext( RequestAdapter req, string path, int level )
         {
-            var cache = new CachedQuery() { Q = new Query( path, Unium.Root ), Reselect = true };
+            var cache = new CachedQuery { Q = new Query( path, Unium.Root ), Reselect = true };
 
             if( level > 0 )
             {

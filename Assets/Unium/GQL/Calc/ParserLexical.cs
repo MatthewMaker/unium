@@ -7,11 +7,11 @@ namespace gw.gql.calc
 
     public partial class Parser
     {
-        string  mText           = null;
-        Token   mPrev           = null;
-        int     mOffset         = 0;
+        string  mText;
+        Token   mPrev;
+        int     mOffset;
         char[]  mValue          = new char[ 256 ];
-        int     mValueLength    = 0;
+        int     mValueLength;
 
 
         //----------------------------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ namespace gw.gql.calc
                 case '&': Consume( '&' ); return mPrev = new Token( Token.AND, new string( mValue, 0, mValueLength ) );
                 case '|': Consume( '|' ); return mPrev = new Token( Token.OR, new string( mValue, 0, mValueLength ) );
                     
-                case '.': return mPrev = char.IsDigit( Peek() ) ? ReadNumber() : new Token( Token.Unknown, null );
+                case '.': return mPrev = char.IsDigit( Peek() ) ? ReadNumber() : new Token( Token.Unknown );
 
                 case '-':
                 {
@@ -155,10 +155,8 @@ namespace gw.gql.calc
                         {
                             return mPrev = ReadNumber();
                         }
-                        else
-                        {
-                            return mPrev = new Token( Token.Negate, new string( mValue, 0, mValueLength ) );
-                        }
+
+                        return mPrev = new Token( Token.Negate, new string( mValue, 0, mValueLength ) );
                     }
 
                     return mPrev = new Token( Token.Subtract, new string( mValue, 0, mValueLength ) );
@@ -205,7 +203,7 @@ namespace gw.gql.calc
 
             // word
 
-            else if( char.IsLetter( ch ) || ch == '$' )
+            if( char.IsLetter( ch ) || ch == '$' )
             {
                 var start = mOffset - 1;
 
@@ -242,7 +240,7 @@ namespace gw.gql.calc
 
             // unknown
 
-            return mPrev = new Token( Token.Unknown, null );
+            return mPrev = new Token( Token.Unknown );
         }
     }
 }

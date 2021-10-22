@@ -3,7 +3,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-
 using gw.gql;
 using gw.proto.http;
 
@@ -50,7 +49,7 @@ namespace gw.unium
                 }
                 catch( Exception e )
                 {
-                    UniumComponent.Warn( string.Format( "Failed to get bind to event '{0}' - {1}", target, e.Message ) );
+                    UniumComponent.Warn($"Failed to get bind to event '{target}' - {e.Message}");
                 }
             }
 
@@ -60,7 +59,6 @@ namespace gw.unium
             if( bound == 0 )
             {
                 req.Reject( ResponseCode.NotFound );
-                return;
             }
         }
     }

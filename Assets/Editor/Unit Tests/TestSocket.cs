@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using NUnit.Framework;
 using gw.proto.http;
 using gw.unium;
+using NUnit.Framework;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +14,7 @@ public class TestSocket
     {
         public MockWebSocket() : base( new HttpRequest() ) { }
 
-        public string Expect = null;
+        public string Expect;
 
         public override void SendAsync( string json )
         {
@@ -47,7 +47,7 @@ public class TestSocket
         // null
 
         rcv.Expect = @"{""id"":""id"",""data"":null}";
-        msg.Reply( null as string );
+        msg.Reply( null );
 
         rcv.Expect = @"{""id"":""id"",""data"":null}";
         msg.Reply( "" );

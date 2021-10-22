@@ -2,14 +2,12 @@
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Reflection;
-
-using TinyJson;
-
+using System.Text;
 using gw.proto.http;
 using gw.proto.utils;
+using TinyJson;
 
 namespace gw.unium
 {
@@ -59,7 +57,7 @@ namespace gw.unium
         //----------------------------------------------------------------------------------------------------
         // internal state
 
-        WebSocket           mSocket         = null;                         // underlying websocket connection
+        WebSocket           mSocket;                         // underlying websocket connection
         List<Message>       mMessageQueue   = new List<Message>();          // messages waiting for dispatch
         List<Repeater>      mRepeaters      = new List<Repeater>();         // messages that are repeated periodically (temporal queries)
         List<EventListener> mListeners      = new List<EventListener>();    // event bindings
@@ -106,7 +104,7 @@ namespace gw.unium
                     throw new Exception( "Failed to parse message" );
                 }
 
-                UniumComponent.Log( string.Format( "[sock:{0}] {1}", mSocket.ID, json ) );
+                UniumComponent.Log($"[sock:{mSocket.ID}] {json}");
 
                 lock( mMessageQueue )
                 {
@@ -116,7 +114,7 @@ namespace gw.unium
             catch( Exception e )
             {
                 mSocketMessage.Error( ResponseCode.BadRequest );
-                UniumComponent.Warn( string.Format( "[sock:{0}] {1}", mSocket.ID, e.Message ) );
+                UniumComponent.Warn($"[sock:{mSocket.ID}] {e.Message}");
             }
         }
 

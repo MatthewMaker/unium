@@ -26,7 +26,7 @@ namespace gw.proto.http
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    [Serializable()]
+    [Serializable]
     public class HttpResponseException : Exception
     {
         public ResponseCode Code;

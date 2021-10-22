@@ -1,9 +1,9 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
+using gw.unium;
 using NUnit.Framework;
 using TinyJson;
-using gw.unium;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

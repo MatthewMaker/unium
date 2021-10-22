@@ -2,12 +2,11 @@
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
 using gw.proto.utils;
-using System.Collections.Generic;
 
 namespace gw.proto.http
 {
@@ -21,8 +20,8 @@ namespace gw.proto.http
 
         public WebRequestHandler        OnWebRequest    = null;
         public WebSocketHandler         OnSocketRequest = null;
-        public WebSocketHandler         OnSocketOpen    = null;
-        public WebSocketHandler         OnSocketClose   = null;
+        public WebSocketHandler         OnSocketOpen;
+        public WebSocketHandler         OnSocketClose;
 
         public void SocketOpen( WebSocket ws )
         {
@@ -61,7 +60,7 @@ namespace gw.proto.http
         public string       Address     { get { return mListener != null ? mListener.LocalEndpoint.ToString() : null; } }
         public bool         IsListening { get { return mListener != null; } }
 
-        protected TcpListener mListener = null;
+        protected TcpListener mListener;
         protected List<WebSocket> mWebSockets = new List<WebSocket>();
 
         public Server( Settings settings = null, Dispatcher dispatcher = null )
@@ -100,7 +99,7 @@ namespace gw.proto.http
 
                 mListener = new TcpListener( Settings.Address, Settings.Port );
                 mListener.Start();
-                mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), this );
+                mListener.BeginAcceptTcpClient( OnAcceptConnection, this );
 
                 Util.Print( "Listening on {0}", mListener.LocalEndpoint.ToString() );
 
@@ -183,14 +182,14 @@ namespace gw.proto.http
 
                 if( tcpClient != null )
                 {
-                    ThreadPool.QueueUserWorkItem( (object c) => (c as Client).OnConnect(), new Client( server.Dispatcher, tcpClient ) );
+                    ThreadPool.QueueUserWorkItem( c => (c as Client).OnConnect(), new Client( server.Dispatcher, tcpClient ) );
                 }
                 else
                 {
                     Util.Warn( "Failed to accept client connection" );
                 }
 
-                server.mListener.BeginAcceptTcpClient( new AsyncCallback( OnAcceptConnection ), server );
+                server.mListener.BeginAcceptTcpClient( OnAcceptConnection, server );
             }
             catch( Exception e )
             {

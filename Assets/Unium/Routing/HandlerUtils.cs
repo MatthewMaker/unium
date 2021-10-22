@@ -1,20 +1,19 @@
 ﻿// Copyright (c) 2017 Gwaredd Mountain, https://opensource.org/licenses/MIT
 #if !UNIUM_DISABLE && ( DEVELOPMENT_BUILD || UNITY_EDITOR || UNIUM_ENABLE )
 
-using UnityEngine;
-
+#if UNITY_EDITOR
 using System;
-using System.IO;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-
+using System.Globalization;
+using System.IO;
 using gw.proto.http;
 using gw.proto.utils;
-
-using System.Collections;
-
-#if UNITY_EDITOR
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
+
 #endif
 
 namespace gw.unium
@@ -37,7 +36,7 @@ namespace gw.unium
             var query  = Util.ParseQueryString( req.Query );
             var width  = query[ "width" ]  != null ? Int32.Parse( query[ "width" ] )  : -1;
             var height = query[ "height" ] != null ? Int32.Parse( query[ "height" ] ) : -1;
-            var scale  = query[ "scale" ]  != null ? float.Parse( query[ "scale" ], System.Globalization.CultureInfo.InvariantCulture ) : -1.0f;
+            var scale  = query[ "scale" ]  != null ? float.Parse( query[ "scale" ], CultureInfo.InvariantCulture ) : -1.0f;
 
             // render cameras to render texture
 
@@ -94,7 +93,7 @@ namespace gw.unium
             RenderTexture.active = previousActiveRTex;
 
             screenshot.Release();
-            UnityEngine.Object.Destroy( screenshot);
+            Object.Destroy( screenshot);
 
             // return png
 
@@ -110,7 +109,7 @@ namespace gw.unium
                 req.Reject( ResponseCode.InternalServerError );
             }
 
-            UnityEngine.Object.Destroy( pixels );
+            Object.Destroy( pixels );
         }
 
 
@@ -224,8 +223,8 @@ namespace gw.unium
                     scenes.Add( new
                     {
                         name    = Path.GetFileNameWithoutExtension( scene.path ),
-                        path    = scene.path,
-                        enabled = scene.enabled
+                        scene.path,
+                        scene.enabled
                     } );
                 }
 
@@ -284,7 +283,7 @@ namespace gw.unium
             {
                 FPS         = 1.0f / Time.smoothDeltaTime,
                 RunningTime = Time.realtimeSinceStartup,
-                Scene       = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name,
+                Scene       = SceneManager.GetActiveScene().name,
             }));
         }
     }

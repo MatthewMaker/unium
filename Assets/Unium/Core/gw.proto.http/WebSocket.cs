@@ -4,13 +4,12 @@
 //#define GW_WEBSOCKET_DETAILED_LOGGING
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.IO;
-using System.Collections.Generic;
-
 using gw.proto.utils;
-using System.Diagnostics;
 
 namespace gw.proto.http
 {
@@ -73,7 +72,7 @@ namespace gw.proto.http
         // for when reading fragmented messages
 
         List<byte[]>    mFragmentPayloads    = new List<byte[]>();      // list of individual payloads
-        uint            mFragmentTotalBytes  = 0;                       // total size of total payload so far
+        uint            mFragmentTotalBytes;                       // total size of total payload so far
         bool            mFragmentIsText      = true;                    // data type set on frist frame so keep track
 
 
@@ -82,15 +81,15 @@ namespace gw.proto.http
         Queue<byte[]>   mSendQueue          = new Queue<byte[]>();
 
         object          mCloseLock          = new object();
-        bool            mCloseSent          = false;
-        bool            mCloseReceived      = false;
+        bool            mCloseSent;
+        bool            mCloseReceived;
 
         // timeouts
 
-        long            mCloseStarted       = 0;
-        long            mLastRecv           = 0;
-        long            mPingTime           = 0;                        // ping pong test
-        bool            mSentPing           = false;
+        long            mCloseStarted;
+        long            mLastRecv;
+        long            mPingTime;                        // ping pong test
+        bool            mSentPing;
 
 
         //------------------------------------------------------------------------------
@@ -362,7 +361,7 @@ namespace gw.proto.http
 
                     buffer = new byte[ numBytes + headerSize ];
                     buffer[ 0 ] = code;
-                    buffer[ 1 ] = (byte) 126;
+                    buffer[ 1 ] = 126;
 
                     Array.Copy( BitConverter.GetBytes( Endian.HostToNetwork( (ushort) numBytes ) ), 0, buffer, 2, 2 );
                 }
@@ -372,7 +371,7 @@ namespace gw.proto.http
 
                     buffer = new byte[ numBytes + headerSize ];
                     buffer[ 0 ] = code;
-                    buffer[ 1 ] = (byte) 127;
+                    buffer[ 1 ] = 127;
 
                     Array.Copy( BitConverter.GetBytes( Endian.HostToNetwork( (ulong) numBytes ) ), 0, buffer, 2, 8 );
                 }
@@ -388,7 +387,7 @@ namespace gw.proto.http
                     }
                     else
                     {
-                        buffer[ 1 ] |= (byte) 0x80; // masked
+                        buffer[ 1 ] |= 0x80; // masked
 
                         // clients MUST mask data sent to a server (RFC 6455/5.1)
                         throw new NotImplementedException();
